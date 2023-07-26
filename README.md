@@ -1,16 +1,25 @@
 # flutter_ime_romaji_web_issue
 
-A new Flutter project.
+An example to show the issue with Flutter's IME for Japenese Romaji on Web
 
-## Getting Started
+## Deltas
 
-This project is a starting point for a Flutter application.
+```
+macOS: 
+TextEditingDeltaInsertion: start: 0, end: 0, data: k
+TextEditingDeltaInsertion: start: 1, end: 0, data: y
+TextEditingDeltaReplacement: start: 0, end: 2, data: きょ
+TextEditingDeltaInsertion: start: 2, end: 0, data: う
+TextEditingDeltaInsertion: start: 3, end: 0, data: h
+TextEditingDeltaReplacement: start: 0, end: 4, data: きょうは
+TextEditingDeltaReplacement: start: 0, end: 4, data: 今日は
 
-A few resources to get you started if this is your first Flutter project:
-
-- [Lab: Write your first Flutter app](https://docs.flutter.dev/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://docs.flutter.dev/cookbook)
-
-For help getting started with Flutter development, view the
-[online documentation](https://docs.flutter.dev/), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+Chrome:
+TextEditingDeltaInsertion: start: 0, end: 0, data: k
+TextEditingDeltaInsertion: start: 1, end: 0, data: y
+TextEditingDeltaReplacement: start: 0, end: 2, data: きょ
+TextEditingDeltaInsertion: start: 2, end: 0, data: う
+TextEditingDeltaInsertion: start: 3, end: 0, data: h
+TextEditingDeltaReplacement: start: 0, end: 4, data: きょうは
+TextEditingDeltaInsertion: start: 4, end: 0, data: 今日は
+```

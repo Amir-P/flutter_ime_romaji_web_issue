@@ -2114,7 +2114,7 @@ class EditableTextState extends State<EditableText>
         WidgetsBindingObserver,
         TickerProviderStateMixin<EditableText>,
         TextSelectionDelegate,
-        TextInputClient
+        DeltaTextInputClient
     implements AutofillClient {
   Timer? _cursorTimer;
   AnimationController get _cursorBlinkOpacityController {
@@ -2848,6 +2848,36 @@ class EditableTextState extends State<EditableText>
 
   @override
   TextEditingValue get currentTextEditingValue => _value;
+
+  @override
+  void updateEditingValueWithDeltas(List<TextEditingDelta> textEditingDeltas) {
+    if (!_shouldCreateInputConnection || textEditingDeltas.isEmpty) return;
+
+    for (final textEditingDelta in textEditingDeltas) {
+      int start = 0, end = 0;
+      String data = '';
+      if (textEditingDelta is TextEditingDeltaInsertion) {
+        start = textEditingDelta.insertionOffset;
+        data = textEditingDelta.textInserted;
+      } else if (textEditingDelta is TextEditingDeltaDeletion) {
+        start = textEditingDelta.deletedRange.start;
+        end = textEditingDelta.deletedRange.end;
+      } else if (textEditingDelta is TextEditingDeltaReplacement) {
+        start = textEditingDelta.replacedRange.start;
+        end = textEditingDelta.replacedRange.end;
+        data = textEditingDelta.replacementText;
+      }
+      print(
+          '${textEditingDelta.runtimeType}: start: $start, end: $end, data: $data');
+      _lastKnownRemoteTextEditingValue =
+          textEditingDelta.apply(_lastKnownRemoteTextEditingValue!);
+      _value = _lastKnownRemoteTextEditingValue!;
+
+      if (data.isNotEmpty) {
+        hideToolbar(true);
+      }
+    }
+  }
 
   @override
   void updateEditingValue(TextEditingValue value) {
@@ -4270,6 +4300,7 @@ class EditableTextState extends State<EditableText>
         : AutofillConfiguration.disabled;
 
     return TextInputConfiguration(
+      enableDeltaModel: true,
       inputType: widget.keyboardType,
       readOnly: widget.readOnly,
       obscureText: widget.obscureText,
