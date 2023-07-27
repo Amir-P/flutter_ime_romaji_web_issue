@@ -1,4 +1,4 @@
-import 'package:flutter/material.dart' hide EditableText, TextEditingController;
+import 'package:flutter/material.dart' hide EditableText;
 import 'package:flutter_ime_romaji_web_issue/editable.dart';
 
 void main() {
